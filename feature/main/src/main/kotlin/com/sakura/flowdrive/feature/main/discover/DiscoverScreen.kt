@@ -45,13 +45,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 data class QuickAction(
-    val label: String,
+    val labelResId: Int,
     val icon: ImageVector,
     val backgroundColor: Color,
     val iconTintColor: Color,
@@ -66,17 +67,17 @@ data class SharedFile(
 )
 
 data class HotCategory(
-    val name: String,
+    val nameResId: Int,
     val count: String,
     val icon: ImageVector,
     val color: Color,
 )
 
 private val quickActions = listOf(
-    QuickAction("最近文件", Icons.Rounded.History, Color(0xFFE8F0FE), Color(0xFF1A73E8)),
-    QuickAction("收藏文件", Icons.Rounded.Star, Color(0xFFFEF7E0), Color(0xFFF9AB00)),
-    QuickAction("共享空间", Icons.Rounded.FolderShared, Color(0xFFE6F4EA), Color(0xFF1E8E3E)),
-    QuickAction("热门推荐", Icons.Rounded.LocalFireDepartment, Color(0xFFFCE8E6), Color(0xFFD93025)),
+    QuickAction(R.string.recent_files, Icons.Rounded.History, Color(0xFFE8F0FE), Color(0xFF1A73E8)),
+    QuickAction(R.string.favorite_files, Icons.Rounded.Star, Color(0xFFFEF7E0), Color(0xFFF9AB00)),
+    QuickAction(R.string.shared_space, Icons.Rounded.FolderShared, Color(0xFFE6F4EA), Color(0xFF1E8E3E)),
+    QuickAction(R.string.hot_recommend, Icons.Rounded.LocalFireDepartment, Color(0xFFFCE8E6), Color(0xFFD93025)),
 )
 
 private val sharedFiles = listOf(
@@ -89,10 +90,10 @@ private val sharedFiles = listOf(
 )
 
 private val hotCategories = listOf(
-    HotCategory("工作文档", "1,234 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFF1A73E8)),
-    HotCategory("学习资料", "892 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFF1E8E3E)),
-    HotCategory("影视资源", "567 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFFD93025)),
-    HotCategory("音乐合集", "345 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFFF9AB00)),
+    HotCategory(R.string.category_work, "1,234 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFF1A73E8)),
+    HotCategory(R.string.category_study, "892 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFF1E8E3E)),
+    HotCategory(R.string.category_media, "567 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFFD93025)),
+    HotCategory(R.string.category_music, "345 个", Icons.AutoMirrored.Rounded.TrendingUp, Color(0xFFF9AB00)),
 )
 
 @Composable
@@ -111,7 +112,7 @@ fun DiscoverScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = "发现",
+                        text = stringResource(R.string.discover),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                     )
@@ -142,7 +143,7 @@ fun DiscoverScreen() {
                             onExpandedChange = { isActive = it },
                             placeholder = {
                                 Text(
-                                    text = "搜索文件、文件夹...",
+                                    text = stringResource(R.string.search_files),
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             },
@@ -168,7 +169,7 @@ fun DiscoverScreen() {
             item {
                 Column {
                     Text(
-                        text = "快捷入口",
+                        text = stringResource(R.string.quick_access),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -192,14 +193,14 @@ fun DiscoverScreen() {
                                 ) {
                                     Icon(
                                         imageVector = action.icon,
-                                        contentDescription = action.label,
+                                        contentDescription = stringResource(action.labelResId),
                                         tint = action.iconTintColor,
                                         modifier = Modifier.size(26.dp),
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = action.label,
+                                    text = stringResource(action.labelResId),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Medium,
@@ -213,7 +214,7 @@ fun DiscoverScreen() {
             item {
                 Column {
                     Text(
-                        text = "热门分类",
+                        text = stringResource(R.string.hot_categories),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -241,7 +242,7 @@ fun DiscoverScreen() {
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = category.name,
+                                    text = stringResource(category.nameResId),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = MaterialTheme.colorScheme.onSurface,
@@ -265,13 +266,13 @@ fun DiscoverScreen() {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "共享动态",
+                            text = stringResource(R.string.shared_updates),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
-                            text = "查看全部",
+                            text = stringResource(R.string.view_all),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.clickable { },

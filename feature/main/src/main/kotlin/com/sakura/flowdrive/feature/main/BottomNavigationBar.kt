@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
 import io.github.fletchmckee.liquid.LiquidState
 import io.github.fletchmckee.liquid.liquid
@@ -374,7 +375,7 @@ private fun LiquidGlassTabItem(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = destination.label,
+                contentDescription = stringResource(destination.labelResId),
                 modifier = Modifier
                     .size(24.dp)
                     .graphicsLayer {
@@ -396,7 +397,7 @@ private fun LiquidGlassTabItem(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = destination.label,
+                    text = stringResource(destination.labelResId),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 11.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,

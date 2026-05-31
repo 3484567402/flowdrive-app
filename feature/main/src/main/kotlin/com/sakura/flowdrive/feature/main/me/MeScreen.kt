@@ -48,35 +48,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sakura.flowdrive.feature.main.R
 
 data class MenuGroup(
     val items: List<MenuItem>,
 )
 
 data class MenuItem(
-    val label: String,
+    val labelResId: Int,
     val icon: ImageVector,
     val iconTintColor: Color,
     val iconBackgroundColor: Color,
-    val subtitle: String? = null,
+    val subtitleResId: Int? = null,
 )
 
 private val menuGroups = listOf(
     MenuGroup(
         items = listOf(
-            MenuItem("收藏文件", Icons.Rounded.Star, Color(0xFFF9AB00), Color(0xFFFEF7E0)),
-            MenuItem("共享空间", Icons.Rounded.Share, Color(0xFF1E8E3E), Color(0xFFE6F4EA)),
-            MenuItem("回收站", Icons.Rounded.Recycling, Color(0xFF1A73E8), Color(0xFFE8F0FE)),
+            MenuItem(R.string.favorite_files, Icons.Rounded.Star, Color(0xFFF9AB00), Color(0xFFFEF7E0)),
+            MenuItem(R.string.shared_space, Icons.Rounded.Share, Color(0xFF1E8E3E), Color(0xFFE6F4EA)),
+            MenuItem(R.string.recycle_bin, Icons.Rounded.Recycling, Color(0xFF1A73E8), Color(0xFFE8F0FE)),
         )
     ),
     MenuGroup(
         items = listOf(
-            MenuItem("消息通知", Icons.Rounded.Notifications, Color(0xFFD93025), Color(0xFFFCE8E6), subtitle = "3 条未读"),
-            MenuItem("隐私设置", Icons.Rounded.PrivacyTip, Color(0xFF1A73E8), Color(0xFFE8F0FE)),
-            MenuItem("帮助与反馈", Icons.AutoMirrored.Rounded.Help, Color(0xFF1E8E3E), Color(0xFFE6F4EA)),
-            MenuItem("关于", Icons.Rounded.Info, Color(0xFF78909C), Color(0xFFECEFF1)),
+            MenuItem(R.string.notifications, Icons.Rounded.Notifications, Color(0xFFD93025), Color(0xFFFCE8E6), subtitleResId = R.string.unread_messages),
+            MenuItem(R.string.privacy_settings, Icons.Rounded.PrivacyTip, Color(0xFF1A73E8), Color(0xFFE8F0FE)),
+            MenuItem(R.string.help_feedback, Icons.AutoMirrored.Rounded.Help, Color(0xFF1E8E3E), Color(0xFFE6F4EA)),
+            MenuItem(R.string.about, Icons.Rounded.Info, Color(0xFF78909C), Color(0xFFECEFF1)),
         )
     ),
 )
@@ -100,7 +102,7 @@ fun MeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "我的",
+                        text = stringResource(R.string.me),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                     )
@@ -109,7 +111,7 @@ fun MeScreen(
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
-                            contentDescription = "设置",
+                            contentDescription = stringResource(R.string.settings),
                             tint = MaterialTheme.colorScheme.onSurface,
                         )
                     }
@@ -192,7 +194,7 @@ private fun UserProfileCard() {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "FlowDrive 用户",
+                text = stringResource(R.string.default_user_name),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -240,14 +242,14 @@ private fun StorageCard() {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "云盘空间",
+                    text = stringResource(R.string.cloud_storage),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
             Text(
-                text = "扩容",
+                text = stringResource(R.string.expand_storage),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -275,12 +277,12 @@ private fun StorageCard() {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "已使用 ${String.format("%.1f", usedGB)} GB",
+                text = stringResource(R.string.storage_used, String.format("%.1f", usedGB)),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "共 ${String.format("%.0f", totalGB)} GB",
+                text = stringResource(R.string.storage_total, String.format("%.0f", totalGB)),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -295,9 +297,9 @@ private fun QuickStatsRow() {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         listOf(
-            "1,234" to "文件总数",
-            "56" to "共享文件",
-            "12" to "收藏",
+            "1,234" to R.string.total_files,
+            "56" to R.string.shared_files_count,
+            "12" to R.string.favorites,
         ).forEach { (value, label) ->
             Column(
                 modifier = Modifier
@@ -316,7 +318,7 @@ private fun QuickStatsRow() {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = label,
+                    text = stringResource(label),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -354,14 +356,14 @@ private fun MenuItemRow(item: MenuItem) {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = item.label,
+                text = stringResource(item.labelResId),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            if (item.subtitle != null) {
+            if (item.subtitleResId != null) {
                 Text(
-                    text = item.subtitle,
+                    text = stringResource(item.subtitleResId),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

@@ -1,5 +1,6 @@
 package com.sakura.flowdrive.feature.main
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Explore
@@ -12,27 +13,27 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class TopLevelDestination(
-    val label: String,
+    @StringRes val labelResId: Int,
     val filledIcon: ImageVector,
     val outlinedIcon: ImageVector,
 ) {
     HOME(
-        label = "首页",
+        labelResId = R.string.home,
         filledIcon = Icons.Filled.Folder,
         outlinedIcon = Icons.Outlined.Folder,
     ),
     TRANSFER(
-        label = "传输",
+        labelResId = R.string.transfer,
         filledIcon = Icons.Filled.CloudUpload,
         outlinedIcon = Icons.Outlined.CloudUpload,
     ),
     DISCOVER(
-        label = "发现",
+        labelResId = R.string.discover,
         filledIcon = Icons.Filled.Explore,
         outlinedIcon = Icons.Outlined.Explore,
     ),
     ME(
-        label = "我的",
+        labelResId = R.string.me,
         filledIcon = Icons.Filled.Person,
         outlinedIcon = Icons.Outlined.Person,
     ),

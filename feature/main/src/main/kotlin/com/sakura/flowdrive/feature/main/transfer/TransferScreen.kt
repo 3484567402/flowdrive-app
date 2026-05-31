@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -103,7 +104,7 @@ fun TransferScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = "传输列表",
+                        text = stringResource(R.string.transfer_list),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                     )
@@ -130,7 +131,7 @@ fun TransferScreen() {
                 FilterChip(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    label = { Text("传输中 (${mockActiveTransfers.size})") },
+                    label = { Text(stringResource(R.string.transfer_active, mockActiveTransfers.size)) },
                     leadingIcon = {
                         if (selectedTab == 0) {
                             Icon(
@@ -148,7 +149,7 @@ fun TransferScreen() {
                 FilterChip(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    label = { Text("已完成 (${mockCompletedTransfers.size})") },
+                    label = { Text(stringResource(R.string.transfer_completed, mockCompletedTransfers.size)) },
                     leadingIcon = {
                         if (selectedTab == 1) {
                             Icon(
@@ -175,7 +176,7 @@ fun TransferScreen() {
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = if (selectedTab == 0) "没有正在传输的任务" else "没有已完成的任务",
+                        text = if (selectedTab == 0) stringResource(R.string.transfer_no_active) else stringResource(R.string.transfer_no_completed),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

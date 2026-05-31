@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -146,7 +147,8 @@ fun FilesRoute() {
     var pathStack by remember { mutableStateOf(listOf<String>()) }
     var isGridView by remember { mutableStateOf(false) }
 
-    val currentDirName = pathStack.lastOrNull() ?: "我的网盘"
+    val myDrive = stringResource(R.string.my_drive)
+    val currentDirName = pathStack.lastOrNull() ?: myDrive
 
     val currentFiles = remember(pathStack) { getMockFilesForPath(currentDirName) }
 
