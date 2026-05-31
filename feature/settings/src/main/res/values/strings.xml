@@ -33,4 +33,5 @@
     <string name="settings_opensource_desc">使用的开源项目列表</string>
     <string name="settings_logout">退出登录</string>
     <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
+    <string name="settings_language">语言</string>
 </resources>

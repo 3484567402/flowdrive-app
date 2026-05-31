@@ -1,0 +1,7 @@
+<resources>
+    <string name="home">ホーム</string>
+    <string name="transfer">転送</string>
+    <string name="discover">発見</string>
+    <string name="me">マイページ</string>
+    <string name="settings">設定</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="home">Startseite</string>
+    <string name="transfer">Übertragung</string>
+    <string name="discover">Entdecken</string>
+    <string name="me">Ich</string>
+    <string name="settings">Einstellungen</string>
+</resources>

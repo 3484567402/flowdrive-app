@@ -1,0 +1,37 @@
+<resources>
+    <string name="settings">Einstellungen</string>
+    <string name="back">Zurück</string>
+    <string name="sub_setting_1">Untereinstellung 1</string>
+    <string name="sub_setting_2">Untereinstellung 2</string>
+    <string name="settings_account">Konto</string>
+    <string name="settings_account_security">Konto und Sicherheit</string>
+    <string name="settings_account_security_desc">Kontoinformationen und Sicherheit verwalten</string>
+    <string name="settings_switch_account">Konto wechseln</string>
+    <string name="settings_switch_account_desc">Schnell zwischen angemeldeten Konten wechseln</string>
+    <string name="settings_appearance">Anzeige</string>
+    <string name="settings_dynamic_color">Dynamische Farben</string>
+    <string name="settings_dynamic_color_desc">Farben aus dem Hintergrundbild übernehmen</string>
+    <string name="settings_dynamic_color_unsupported">Gerät unterstützt keine dynamischen Farben</string>
+    <string name="settings_dark_mode">Dunkelmodus</string>
+    <string name="settings_dark_mode_system">System folgen</string>
+    <string name="settings_dark_mode_light">Hellmodus</string>
+    <string name="settings_dark_mode_dark">Dunkelmodus</string>
+    <string name="settings_amoled">AMOLED Schwarz</string>
+    <string name="settings_amoled_desc">Rein schwarzer Hintergrund zum OLED-Akku sparen</string>
+    <string name="settings_system_font">Systemschriftart verwenden</string>
+    <string name="settings_system_font_on">Aktuell: Systemschriftart</string>
+    <string name="settings_system_font_off">Aktuell: HarmonyOS Sans</string>
+    <string name="settings_app">App-Einstellungen</string>
+    <string name="settings_clear_cache">Cache leeren</string>
+    <string name="settings_clear_cache_desc">Lokalen Speicherplatz freigeben</string>
+    <string name="settings_support_about">Support und Info</string>
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_feedback_desc">Teilen Sie uns Ihr wertvolles Feedback mit</string>
+    <string name="settings_about">Über uns</string>
+    <string name="settings_about_desc">Mehr über die App erfahren</string>
+    <string name="settings_opensource">Open-Source-Lizenzen</string>
+    <string name="settings_opensource_desc">Liste der verwendeten Open-Source-Projekte</string>
+    <string name="settings_logout">Abmelden</string>
+    <string name="settings_copyright">Copyright © 2024 Sakura. Alle Rechte vorbehalten.</string>
+    <string name="settings_language">Sprache</string>
+</resources>

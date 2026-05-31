@@ -1,0 +1,7 @@
+<resources>
+    <string name="home">홈</string>
+    <string name="transfer">전송</string>
+    <string name="discover">발견</string>
+    <string name="me">내 정보</string>
+    <string name="settings">설정</string>
+</resources>

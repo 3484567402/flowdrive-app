@@ -1,0 +1,7 @@
+<resources>
+    <string name="home">Inicio</string>
+    <string name="transfer">Transferencia</string>
+    <string name="discover">Descubrir</string>
+    <string name="me">Yo</string>
+    <string name="settings">Ajustes</string>
+</resources>

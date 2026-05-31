@@ -19,6 +19,10 @@ class MainActivity : ComponentActivity() {
 
     private val navigator = AppNavigator(appState)
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(AppSettings.applyLocale(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

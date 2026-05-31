@@ -33,4 +33,5 @@
     <string name="settings_opensource_desc">List of open source projects used</string>
     <string name="settings_logout">Log Out</string>
     <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
+    <string name="settings_language">Language</string>
 </resources>
