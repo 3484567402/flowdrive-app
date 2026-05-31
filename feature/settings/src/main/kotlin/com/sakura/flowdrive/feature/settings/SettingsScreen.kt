@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Brightness1
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.DarkMode
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SwitchAccount
@@ -143,6 +145,7 @@ fun SettingsScreen(
             item { DarkModeSettingItem() }
             item { DynamicColorSettingItem() }
             item { FontSettingItem() }
+            item { LanguageSettingItem() }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -402,6 +405,111 @@ private fun FontSettingItem() {
                 Text(text = if (AppSettings.useSystemFont) stringResource(R.string.settings_system_font_on) else stringResource(R.string.settings_system_font_off), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 2.dp))
             }
             Switch(checked = AppSettings.useSystemFont, onCheckedChange = { AppSettings.updateUseSystemFont(it) })
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LanguageSettingItem() {
+    val currentLangCode = AppSettings.languageCode
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val rotation by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "lang_rotation"
+    )
+
+    val currentLangName = AppSettings.supportedLanguages.find { it.first == currentLangCode }?.second
+        ?: stringResource(R.string.settings_language_system)
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 1.dp),
+        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(modifier = Modifier.animateContentSize(animationSpec = tween(durationMillis = 300))) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .clickable { isExpanded = !isExpanded }
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.size(40.dp).background(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Language,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(
+                    modifier = Modifier.weight(1f).padding(end = 8.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                    Text(text = currentLangName, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+
+                Icon(
+                    imageVector = Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.size(24.dp).rotate(rotation)
+                )
+            }
+
+            if (isExpanded) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 4.dp)
+                ) {
+                    AppSettings.supportedLanguages.forEach { (code, name) ->
+                        val isSelected = code == currentLangCode
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .clickable {
+                                    AppSettings.updateLanguage(code)
+                                    isExpanded = false
+                                }
+                                .padding(horizontal = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = name,
+                                fontSize = 15.sp,
+                                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.weight(1f)
+                            )
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
