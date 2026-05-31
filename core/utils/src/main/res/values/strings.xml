@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">系统响应异常</string>
+    <string name="crash_warning">应用捕获到严重错误，日志已存至本地。</string>
+    <string name="crash_no_log">未获取到日志内容</string>
+    <string name="crash_copy">复制</string>
+    <string name="crash_copied">已复制到剪贴板</string>
+    <string name="crash_restart">重启应用</string>
+</resources>
