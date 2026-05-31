@@ -86,4 +86,15 @@ object AppSettings {
         config.setLocales(LocaleList(locale))
         return context.createConfigurationContext(config)
     }
+
+    fun applyLocaleEarly(context: Context): Context {
+        MMKV.initialize(context)
+        val kv = MMKV.defaultMMKV()
+        val savedLang = kv.decodeString("language_code", "") ?: ""
+        return if (savedLang.isNotEmpty()) {
+            applyLocale(context, savedLang)
+        } else {
+            context
+        }
+    }
 }
