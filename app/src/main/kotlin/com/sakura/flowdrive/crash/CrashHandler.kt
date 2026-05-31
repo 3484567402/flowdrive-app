@@ -10,7 +10,7 @@ import kotlin.system.exitProcess
 object CrashHandler {
 
     private lateinit var applicationContext: Context
-    private var isHandling = false
+    private var isHandling = false // 防止重复触发崩溃逻辑
 
     fun init(context: Context) {
         applicationContext = context.applicationContext
@@ -21,12 +21,14 @@ object CrashHandler {
             try {
                 handleException(thread, throwable)
             } catch (e: Exception) {
+                // 如果处理过程报错，强制退出，防止僵尸进程
                 exitProcess(1)
             }
         }
     }
 
     private fun handleException(thread: Thread, throwable: Throwable) {
+        // 1. 获取堆栈
         val sw = StringWriter()
         val pw = PrintWriter(sw)
         throwable.printStackTrace(pw)
@@ -46,13 +48,16 @@ Stack Trace:
 $stackTrace
         """.trimIndent()
 
+        // 2. 第一道保险
         Logger.e("CRASH_MASTER", errorLog)
 
+        // 3. 尝试启动子进程救援页面
         try {
             CrashActivity.start(applicationContext, errorLog)
         } catch (e: Exception) {
         }
 
+        // 4. 彻底杀掉当前进程
         Process.killProcess(Process.myPid())
         exitProcess(10)
     }
