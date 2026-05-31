@@ -430,11 +430,12 @@ private fun LanguageSettingItem() {
     val currentLangName = AppSettings.supportedLanguages.find { it.first == currentLangCode }?.second
         ?: stringResource(R.string.settings_language_system)
 
+    val context = LocalContext.current
+
     if (showRestartDialog) {
         RestartDialog(
             onDismiss = { showRestartDialog = false },
             onConfirm = {
-                val context = LocalContext.current
                 val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
                 intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
