@@ -1,6 +1,7 @@
 package com.sakura.flowdrive.core.util
 
 import android.content.Context
+import android.content.Intent
 import android.os.Process
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -10,7 +11,7 @@ object CrashHandler {
 
     private lateinit var applicationContext: Context
     private var isHandling = false
-    private var crashCallback: ((context: Context, crashInfo: String) -> Unit)? = null
+    private var crashActivityClassName: String? = null
 
     fun init(context: Context) {
         applicationContext = context.applicationContext
@@ -26,8 +27,8 @@ object CrashHandler {
         }
     }
 
-    fun setCrashCallback(callback: (context: Context, crashInfo: String) -> Unit) {
-        crashCallback = callback
+    fun setCrashActivity(className: String) {
+        crashActivityClassName = className
     }
 
     private fun handleException(thread: Thread, throwable: Throwable) {
@@ -53,7 +54,13 @@ $stackTrace
         Logger.e("CRASH_MASTER", errorLog)
 
         try {
-            crashCallback?.invoke(applicationContext, errorLog)
+            crashActivityClassName?.let { className ->
+                val intent = Intent(applicationContext, Class.forName(className)).apply {
+                    putExtra("crash_log", errorLog)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                applicationContext.startActivity(intent)
+            }
         } catch (e: Exception) {
         }
 

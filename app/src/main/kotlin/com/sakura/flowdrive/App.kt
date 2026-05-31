@@ -1,7 +1,6 @@
 package com.sakura.flowdrive
 
 import android.app.Application
-import com.sakura.flowdrive.CrashActivity
 import com.sakura.flowdrive.core.util.AppSettings
 import com.sakura.flowdrive.core.util.CrashHandler
 import com.sakura.flowdrive.core.util.Logger
@@ -13,8 +12,6 @@ class App : Application() {
         AppSettings.init(this)
         Logger.initialize(this)
         CrashHandler.init(this)
-        CrashHandler.setCrashCallback { context, crashInfo ->
-            CrashActivity.start(context, crashInfo)
-        }
+        CrashHandler.setCrashActivity("com.sakura.flowdrive.CrashActivity")
     }
 }

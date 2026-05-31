@@ -3,7 +3,6 @@ package com.sakura.flowdrive
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -33,16 +32,6 @@ import com.sakura.flowdrive.ui.theme.FlowDriveTheme
 import kotlin.system.exitProcess
 
 class CrashActivity : ComponentActivity() {
-
-    companion object {
-        fun start(context: Context, crashInfo: String) {
-            val intent = Intent(context, CrashActivity::class.java).apply {
-                putExtra("crash_log", crashInfo)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            context.startActivity(intent)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
