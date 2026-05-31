@@ -13,7 +13,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class TopLevelDestination(
-    @StringRes val labelResId: Int,
+    @param:StringRes val labelResId: Int,
     val filledIcon: ImageVector,
     val outlinedIcon: ImageVector,
 ) {
