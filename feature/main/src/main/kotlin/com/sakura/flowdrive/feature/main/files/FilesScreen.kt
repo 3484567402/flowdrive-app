@@ -1,6 +1,7 @@
 package com.sakura.flowdrive.feature.main.files
 
 import androidx.compose.animation.Crossfade
+import com.sakura.flowdrive.feature.main.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
