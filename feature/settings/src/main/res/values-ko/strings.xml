@@ -35,4 +35,8 @@
     <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
     <string name="settings_language">언어</string>
     <string name="settings_language_system">시스템 따르기</string>
+    <string name="settings_language_restart_title">앱 재시작</string>
+    <string name="settings_language_restart_message">언어 설정이 변경되었습니다. 변경 사항을 적용하려면 앱을 재시작해야 합니다.</string>
+    <string name="settings_language_restart_now">지금 재시작</string>
+    <string name="settings_language_restart_later">나중에</string>
 </resources>

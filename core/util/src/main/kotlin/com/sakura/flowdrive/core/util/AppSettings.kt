@@ -73,13 +73,17 @@ object AppSettings {
         kv?.encode("language_code", code)
     }
 
+    private fun buildLocale(code: String): Locale {
+        return Locale.Builder().setLanguageTag(code).build()
+    }
+
     fun getLocale(): Locale {
         if (languageCode.isEmpty()) return Locale.getDefault()
-        return Locale(languageCode)
+        return buildLocale(languageCode)
     }
 
     fun applyLocale(context: Context, code: String = languageCode): Context {
-        val locale = if (code.isEmpty()) Locale.getDefault() else Locale(code)
+        val locale = if (code.isEmpty()) Locale.getDefault() else buildLocale(code)
         Locale.setDefault(locale)
         val config = context.resources.configuration
         config.setLocale(locale)

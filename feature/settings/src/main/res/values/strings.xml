@@ -35,4 +35,8 @@
     <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_system">跟随系统</string>
+    <string name="settings_language_restart_title">重启应用</string>
+    <string name="settings_language_restart_message">语言设置已更改，需要重启应用才能生效。</string>
+    <string name="settings_language_restart_now">立即重启</string>
+    <string name="settings_language_restart_later">稍后</string>
 </resources>

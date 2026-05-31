@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,7 @@ class CrashActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val crashLog = intent.getStringExtra("crash_log") ?: "未获取到日志内容"
+        val crashLog = intent.getStringExtra("crash_log") ?: getString(R.string.crash_no_log)
 
         Logger.e("CRASH_RESCUE", "救援进程启动成功，展示崩溃信息")
 
@@ -67,7 +68,7 @@ class CrashActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text("系统响应异常", fontWeight = FontWeight.Bold) },
+                    title = { Text(stringResource(R.string.crash_title), fontWeight = FontWeight.Bold) },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer,
                         titleContentColor = MaterialTheme.colorScheme.onErrorContainer
@@ -93,7 +94,7 @@ class CrashActivity : ComponentActivity() {
                     Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("应用捕获到严重错误，日志已存至本地。", fontSize = 13.sp)
+                        Text(stringResource(R.string.crash_message), fontSize = 13.sp)
                     }
                 }
 
@@ -133,13 +134,13 @@ class CrashActivity : ComponentActivity() {
                     onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         cm.setPrimaryClip(ClipData.newPlainText("CrashLog", log))
-                        Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.crash_copied), Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(Icons.Default.ContentCopy, null)
                     Spacer(Modifier.width(4.dp))
-                    Text("复制")
+                    Text(stringResource(R.string.crash_copy))
                 }
 
                 Button(
@@ -153,7 +154,7 @@ class CrashActivity : ComponentActivity() {
                 ) {
                     Icon(Icons.Default.Refresh, null)
                     Spacer(Modifier.width(4.dp))
-                    Text("重启应用")
+                    Text(stringResource(R.string.crash_restart))
                 }
             }
         }

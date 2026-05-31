@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FlowDrive</string>
+    <string name="crash_title">System Error</string>
+    <string name="crash_no_log">No log content available</string>
+    <string name="crash_message">A critical error has been caught. The log has been saved locally.</string>
+    <string name="crash_copy">Copy</string>
+    <string name="crash_copied">Copied to clipboard</string>
+    <string name="crash_restart">Restart App</string>
 </resources>

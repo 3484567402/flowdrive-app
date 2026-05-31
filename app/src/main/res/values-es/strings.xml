@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FlowDrive</string>
+    <string name="crash_title">Error del sistema</string>
+    <string name="crash_no_log">No hay contenido de registro disponible</string>
+    <string name="crash_message">Se ha detectado un error crítico. El registro se ha guardado localmente.</string>
+    <string name="crash_copy">Copiar</string>
+    <string name="crash_copied">Copiado al portapapeles</string>
+    <string name="crash_restart">Reiniciar aplicación</string>
 </resources>

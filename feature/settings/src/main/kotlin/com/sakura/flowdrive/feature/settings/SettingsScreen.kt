@@ -1,5 +1,6 @@
 package com.sakura.flowdrive.feature.settings
 
+import android.content.Intent
 import android.os.Build
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -37,6 +38,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SwitchAccount
 import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -52,6 +54,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,12 +65,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sakura.flowdrive.core.util.AppSettings
+import kotlin.system.exitProcess
 
 @Composable
 fun SettingsRoute(
@@ -414,6 +419,7 @@ private fun FontSettingItem() {
 private fun LanguageSettingItem() {
     val currentLangCode = AppSettings.languageCode
     var isExpanded by remember { mutableStateOf(false) }
+    var showRestartDialog by remember { mutableStateOf(false) }
 
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -423,6 +429,19 @@ private fun LanguageSettingItem() {
 
     val currentLangName = AppSettings.supportedLanguages.find { it.first == currentLangCode }?.second
         ?: stringResource(R.string.settings_language_system)
+
+    if (showRestartDialog) {
+        RestartDialog(
+            onDismiss = { showRestartDialog = false },
+            onConfirm = {
+                val context = LocalContext.current
+                val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivity(intent)
+                exitProcess(0)
+            }
+        )
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(top = 1.dp),
@@ -485,7 +504,10 @@ private fun LanguageSettingItem() {
                                 .fillMaxWidth()
                                 .height(48.dp)
                                 .clickable {
-                                    AppSettings.updateLanguage(code)
+                                    if (code != currentLangCode) {
+                                        AppSettings.updateLanguage(code)
+                                        showRestartDialog = true
+                                    }
                                     isExpanded = false
                                 }
                                 .padding(horizontal = 12.dp),
@@ -512,6 +534,32 @@ private fun LanguageSettingItem() {
             }
         }
     }
+}
+
+@Composable
+private fun RestartDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(text = stringResource(R.string.settings_language_restart_title))
+        },
+        text = {
+            Text(text = stringResource(R.string.settings_language_restart_message))
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = stringResource(R.string.settings_language_restart_now))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(R.string.settings_language_restart_later))
+            }
+        }
+    )
 }
 
 @Composable

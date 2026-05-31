@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FlowDrive</string>
+    <string name="crash_title">시스템 오류</string>
+    <string name="crash_no_log">로그 내용을 가져올 수 없습니다</string>
+    <string name="crash_message">심각한 오류가 감지되었습니다. 로그가 로컬에 저장되었습니다.</string>
+    <string name="crash_copy">복사</string>
+    <string name="crash_copied">클립보드에 복사됨</string>
+    <string name="crash_restart">앱 재시작</string>
 </resources>
