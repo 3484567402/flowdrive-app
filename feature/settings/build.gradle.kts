@@ -31,7 +31,9 @@ android {
 
 dependencies {
     implementation(project(":core:navigation"))
+    implementation(project(":core:util"))
 
+    implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)

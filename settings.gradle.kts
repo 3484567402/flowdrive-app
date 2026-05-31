@@ -18,6 +18,6 @@ rootProject.name = "FlowDrive"
 
 include(":app")
 include(":core:navigation")
-include(":core:utils")
+include(":core:util")
 include(":feature:main")
 include(":feature:settings")

@@ -1,0 +1,36 @@
+<resources>
+    <string name="settings">Settings</string>
+    <string name="back">Back</string>
+    <string name="sub_setting_1">Sub Setting 1</string>
+    <string name="sub_setting_2">Sub Setting 2</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_account_security">Account &amp; Security</string>
+    <string name="settings_account_security_desc">Manage account info and security</string>
+    <string name="settings_switch_account">Switch Account</string>
+    <string name="settings_switch_account_desc">Quickly switch between logged-in accounts</string>
+    <string name="settings_appearance">Display</string>
+    <string name="settings_dynamic_color">Dynamic Color</string>
+    <string name="settings_dynamic_color_desc">Apply colors derived from your wallpaper</string>
+    <string name="settings_dynamic_color_unsupported">Device does not support dynamic color</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_dark_mode_system">Follow System</string>
+    <string name="settings_dark_mode_light">Light Mode</string>
+    <string name="settings_dark_mode_dark">Dark Mode</string>
+    <string name="settings_amoled">AMOLED Black</string>
+    <string name="settings_amoled_desc">Pure black background to save OLED battery</string>
+    <string name="settings_system_font">Use System Font</string>
+    <string name="settings_system_font_on">Current: System Font</string>
+    <string name="settings_system_font_off">Current: HarmonyOS Sans</string>
+    <string name="settings_app">App Settings</string>
+    <string name="settings_clear_cache">Clear Cache</string>
+    <string name="settings_clear_cache_desc">Free up local storage space</string>
+    <string name="settings_support_about">Support &amp; About</string>
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_feedback_desc">Share your valuable feedback with us</string>
+    <string name="settings_about">About Us</string>
+    <string name="settings_about_desc">Learn about the app</string>
+    <string name="settings_opensource">Open Source Licenses</string>
+    <string name="settings_opensource_desc">List of open source projects used</string>
+    <string name="settings_logout">Log Out</string>
+    <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
+</resources>

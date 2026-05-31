@@ -1,6 +1,36 @@
 <resources>
     <string name="settings">设置</string>
+    <string name="back">返回</string>
     <string name="sub_setting_1">子设置1</string>
     <string name="sub_setting_2">子设置2</string>
-    <string name="back">返回</string>
+    <string name="settings_account">账户设置</string>
+    <string name="settings_account_security">账号与安全</string>
+    <string name="settings_account_security_desc">管理账号信息和安全</string>
+    <string name="settings_switch_account">切换账号</string>
+    <string name="settings_switch_account_desc">在已登录的账号之间快速切换</string>
+    <string name="settings_appearance">显示设置</string>
+    <string name="settings_dynamic_color">莫奈配色</string>
+    <string name="settings_dynamic_color_desc">根据系统壁纸提取颜色</string>
+    <string name="settings_dynamic_color_unsupported">设备不支持动态色彩</string>
+    <string name="settings_dark_mode">夜间模式</string>
+    <string name="settings_dark_mode_system">跟随系统</string>
+    <string name="settings_dark_mode_light">浅色模式</string>
+    <string name="settings_dark_mode_dark">夜间模式</string>
+    <string name="settings_amoled">AMOLED 纯黑</string>
+    <string name="settings_amoled_desc">全黑背景，节省 OLED 屏幕电量</string>
+    <string name="settings_system_font">使用系统字体</string>
+    <string name="settings_system_font_on">当前：系统字体</string>
+    <string name="settings_system_font_off">当前：HarmonyOS Sans</string>
+    <string name="settings_app">应用设置</string>
+    <string name="settings_clear_cache">清除缓存</string>
+    <string name="settings_clear_cache_desc">释放本地存储空间</string>
+    <string name="settings_support_about">支持与关于</string>
+    <string name="settings_feedback">意见反馈</string>
+    <string name="settings_feedback_desc">向我们提供宝贵意见</string>
+    <string name="settings_about">关于我们</string>
+    <string name="settings_about_desc">了解应用信息</string>
+    <string name="settings_opensource">开源许可证</string>
+    <string name="settings_opensource_desc">使用的开源项目列表</string>
+    <string name="settings_logout">退出登录</string>
+    <string name="settings_copyright">Copyright © 2024 Sakura. All rights reserved.</string>
 </resources>

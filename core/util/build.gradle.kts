@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sakura.flowdrive.core.utils"
+    namespace = "com.sakura.flowdrive.core.util"
     compileSdk = 36
 
     defaultConfig {
@@ -29,9 +29,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material.icons.extended)
     implementation(libs.mmkv)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
 }

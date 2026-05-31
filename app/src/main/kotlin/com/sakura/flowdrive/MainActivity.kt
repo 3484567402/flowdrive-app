@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.sakura.flowdrive.core.navigation.AppNavigator
 import com.sakura.flowdrive.core.navigation.AppState
+import com.sakura.flowdrive.core.util.AppSettings
 import com.sakura.flowdrive.navigation.AppNavHost
-import com.sakura.flowdrive.ui.theme.ComposeEmptyActivityTheme
+import com.sakura.flowdrive.ui.theme.FlowDriveTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainActivity : ComponentActivity() {
@@ -20,9 +21,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppSettings.init(this)
         enableEdgeToEdge()
         setContent {
-            ComposeEmptyActivityTheme {
+            FlowDriveTheme(
+                dynamicColor = AppSettings.dynamicColor,
+            ) {
                 AppNavHost(navigator = navigator)
             }
         }

@@ -14,15 +14,9 @@ fun EntryProviderScope<NavKey>.settingsGraph(
 ) {
     entry<SettingsRoutes.Settings> {
         SettingsRoute(
-            onBack = { navigationController.navigateBack() },
-            onAbout = { },
-            onOpenSource = { },
-            onEditInfo = { },
-            onStorMgmt = { },
-            onLogin = { },
-            onPlayerSettings = { },
-            onDownloadManager = { },
-            onUISettings = { },
+            onNavigateBack = { navigationController.navigateBack() },
+            onNavigateToSubSetting1 = { navigator.navigateTo(SettingsRoutes.SubSetting1) },
+            onNavigateToSubSetting2 = { navigator.navigateTo(SettingsRoutes.SubSetting2) },
         )
     }
     entry<SettingsRoutes.SubSetting1> {

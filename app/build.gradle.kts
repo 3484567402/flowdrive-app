@@ -68,7 +68,7 @@ android {
 
 dependencies {
     implementation(project(":core:navigation"))
-    implementation(project(":core:utils"))
+    implementation(project(":core:util"))
     implementation(project(":feature:main"))
     implementation(project(":feature:settings"))
 
