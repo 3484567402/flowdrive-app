@@ -51,8 +51,6 @@ class CrashActivity : ComponentActivity() {
 
         val crashLog = intent.getStringExtra("crash_log") ?: "未获取到日志内容"
 
-        Logger.e("CRASH_RESCUE", "救援进程启动成功，展示崩溃信息")
-
         setContent {
             FlowDriveTheme(dynamicColor = AppSettings.dynamicColor) {
                 CrashScreen(crashLog)
