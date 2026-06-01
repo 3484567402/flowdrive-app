@@ -134,6 +134,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.Person,
                     title = stringResource(R.string.settings_account_security),
+                    subtitle = stringResource(R.string.settings_account_security_desc),
                     onClick = onSubSetting1
                 )
             }
@@ -141,6 +142,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.SwitchAccount,
                     title = stringResource(R.string.settings_switch_account),
+                    subtitle = stringResource(R.string.settings_switch_account_desc),
                     onClick = onSubSetting2
                 )
             }
@@ -162,6 +164,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.Delete,
                     title = stringResource(R.string.settings_clear_cache),
+                    subtitle = stringResource(R.string.settings_clear_cache_desc),
                     onClick = { }
                 )
             }
@@ -174,6 +177,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.Feedback,
                     title = stringResource(R.string.settings_feedback),
+                    subtitle = stringResource(R.string.settings_feedback_desc),
                     onClick = { }
                 )
             }
@@ -181,6 +185,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.Info,
                     title = stringResource(R.string.settings_about),
+                    subtitle = stringResource(R.string.settings_about_desc),
                     onClick = { }
                 )
             }
@@ -188,6 +193,7 @@ fun SettingsScreen(
                 ModernSettingItem(
                     icon = Icons.Default.Code,
                     title = stringResource(R.string.settings_opensource),
+                    subtitle = stringResource(R.string.settings_opensource_desc),
                     onClick = { }
                 )
             }
@@ -243,6 +249,11 @@ private fun DarkModeSettingItem() {
         stringResource(R.string.settings_dark_mode_light),
         stringResource(R.string.settings_dark_mode_dark),
     )
+    val currentModeText = when (selectedIndex) {
+        1 -> stringResource(R.string.settings_dark_mode_light)
+        2 -> if (isAmoled) stringResource(R.string.settings_dark_mode_dark) + " · AMOLED" else stringResource(R.string.settings_dark_mode_dark)
+        else -> stringResource(R.string.settings_dark_mode_system)
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -254,7 +265,7 @@ private fun DarkModeSettingItem() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .height(64.dp)
                     .clickable { isExpanded = !isExpanded }
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -280,7 +291,8 @@ private fun DarkModeSettingItem() {
                     modifier = Modifier.weight(1f).padding(end = 8.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = stringResource(R.string.settings_dark_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                    Text(text = stringResource(R.string.settings_dark_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(text = currentModeText, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
 
                 Icon(
@@ -334,8 +346,8 @@ private fun DarkModeSettingItem() {
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = stringResource(R.string.settings_amoled), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
-                                Text(text = stringResource(R.string.settings_amoled_desc), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(text = stringResource(R.string.settings_amoled), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(text = stringResource(R.string.settings_amoled_desc), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                             Switch(checked = isAmoled, onCheckedChange = {
                                 AppSettings.updateAmoled(it)
@@ -359,7 +371,7 @@ private fun DynamicColorSettingItem() {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -370,7 +382,8 @@ private fun DynamicColorSettingItem() {
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.settings_dynamic_color), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_dynamic_color), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = if (isSupported) stringResource(R.string.settings_dynamic_color_desc) else stringResource(R.string.settings_dynamic_color_unsupported), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             Switch(enabled = isSupported, checked = AppSettings.dynamicColor, onCheckedChange = { AppSettings.updateDynamicColor(it) })
         }
@@ -386,7 +399,7 @@ private fun FontSettingItem() {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -397,7 +410,8 @@ private fun FontSettingItem() {
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.settings_system_font), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_system_font), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = if (AppSettings.useSystemFont) stringResource(R.string.settings_system_font_on) else stringResource(R.string.settings_system_font_off), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp))
             }
             Switch(checked = AppSettings.useSystemFont, onCheckedChange = { AppSettings.updateUseSystemFont(it) })
         }
@@ -406,6 +420,10 @@ private fun FontSettingItem() {
 
 @Composable
 private fun LanguageSettingItem(onClick: () -> Unit) {
+    val currentLangCode = AppSettings.languageCode
+    val currentLangName = AppSettings.supportedLanguages.find { it.first == currentLangCode }?.second
+        ?: stringResource(R.string.settings_language_system)
+
     Card(
         modifier = Modifier.fillMaxWidth().padding(top = 1.dp),
         shape = RoundedCornerShape(14.dp),
@@ -415,7 +433,7 @@ private fun LanguageSettingItem(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(64.dp)
                 .clickable(onClick = onClick)
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -441,7 +459,8 @@ private fun LanguageSettingItem(onClick: () -> Unit) {
                 modifier = Modifier.weight(1f).padding(end = 8.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(text = currentLangName, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
 
             Icon(
@@ -581,6 +600,7 @@ private fun RestartDialog(
 private fun ModernSettingItem(
     icon: ImageVector,
     title: String,
+    subtitle: String? = null,
     onClick: () -> Unit
 ) {
     Card(
@@ -592,7 +612,7 @@ private fun ModernSettingItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(if (subtitle != null) 64.dp else 56.dp)
                 .clickable(onClick = onClick)
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -604,7 +624,12 @@ private fun ModernSettingItem(
                 Icon(imageVector = icon, contentDescription = title, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(22.dp))
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
+                Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (subtitle != null) {
+                    Text(text = subtitle, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp))
+                }
+            }
             Icon(imageVector = Icons.Default.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(24.dp))
         }
     }
