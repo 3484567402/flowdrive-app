@@ -38,6 +38,10 @@ object AppSettings {
         "es" to "Español",
     )
 
+    fun initMMKV(context: Context) {
+        MMKV.initialize(context)
+    }
+
     fun init(context: Context) {
         kv = MMKV.defaultMMKV()
         darkModeIndex = kv!!.decodeInt("dark_mode_index", 0)

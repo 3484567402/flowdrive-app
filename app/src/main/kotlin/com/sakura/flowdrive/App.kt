@@ -5,11 +5,10 @@ import android.content.Context
 import com.sakura.flowdrive.core.util.AppSettings
 import com.sakura.flowdrive.core.util.CrashHandler
 import com.sakura.flowdrive.core.util.Logger
-import com.tencent.mmkv.MMKV
 
 class App : Application() {
     override fun attachBaseContext(base: Context) {
-        MMKV.initialize(base)
+        AppSettings.initMMKV(base)
         super.attachBaseContext(AppSettings.applyLocaleEarly(base))
     }
 
