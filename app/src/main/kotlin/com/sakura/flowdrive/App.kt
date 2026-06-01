@@ -17,6 +17,8 @@ class App : Application() {
         super.onCreate()
         AppSettings.init(this)
         Logger.initialize(this)
-        CrashHandler.init(this)
+        CrashHandler.init(this) { context, crashInfo ->
+            CrashActivity.start(context, crashInfo)
+        }
     }
 }
