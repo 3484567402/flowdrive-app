@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">FlowDrive</string>
-    <string name="crash_title">Erreur système</string>
-    <string name="crash_no_log">Aucun contenu de journal disponible</string>
-    <string name="crash_message">Une erreur critique a été détectée. Le journal a été enregistré localement.</string>
-    <string name="crash_copy">Copier</string>
-    <string name="crash_copied">Copié dans le presse-papiers</string>
-    <string name="crash_restart">Redémarrer l\'application</string>
-</resources>

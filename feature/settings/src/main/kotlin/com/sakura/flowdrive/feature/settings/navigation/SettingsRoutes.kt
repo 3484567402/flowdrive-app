@@ -12,4 +12,7 @@ object SettingsRoutes {
 
     @Serializable
     data object SubSetting2 : NavKey
+
+    @Serializable
+    data object LanguageSetting : NavKey
 }

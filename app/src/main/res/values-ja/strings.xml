@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">FlowDrive</string>
-    <string name="crash_title">システムエラー</string>
-    <string name="crash_no_log">ログ内容を取得できません</string>
-    <string name="crash_message">重大なエラーが検出されました。ログはローカルに保存されています。</string>
-    <string name="crash_copy">コピー</string>
-    <string name="crash_copied">クリップボードにコピーしました</string>
-    <string name="crash_restart">アプリを再起動</string>
-</resources>

@@ -2,7 +2,6 @@ package com.sakura.flowdrive.feature.settings
 
 import android.content.Intent
 import android.os.Build
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -55,6 +54,7 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -79,11 +79,13 @@ fun SettingsRoute(
     onNavigateBack: () -> Unit = {},
     onNavigateToSubSetting1: () -> Unit = {},
     onNavigateToSubSetting2: () -> Unit = {},
+    onNavigateToLanguage: () -> Unit = {},
 ) {
     SettingsScreen(
         onBack = onNavigateBack,
         onSubSetting1 = onNavigateToSubSetting1,
         onSubSetting2 = onNavigateToSubSetting2,
+        onLanguage = onNavigateToLanguage,
     )
 }
 
@@ -93,6 +95,7 @@ fun SettingsScreen(
     onBack: () -> Unit = {},
     onSubSetting1: () -> Unit = {},
     onSubSetting2: () -> Unit = {},
+    onLanguage: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -150,7 +153,7 @@ fun SettingsScreen(
             item { DarkModeSettingItem() }
             item { DynamicColorSettingItem() }
             item { FontSettingItem() }
-            item { LanguageSettingItem() }
+            item { LanguageSettingItem(onClick = onLanguage) }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -414,21 +417,77 @@ private fun FontSettingItem() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LanguageSettingItem() {
+private fun LanguageSettingItem(onClick: () -> Unit) {
     val currentLangCode = AppSettings.languageCode
-    var isExpanded by remember { mutableStateOf(false) }
-    var showRestartDialog by remember { mutableStateOf(false) }
-
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = "lang_rotation"
-    )
-
     val currentLangName = AppSettings.supportedLanguages.find { it.first == currentLangCode }?.second
         ?: stringResource(R.string.settings_language_system)
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 1.dp),
+        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+                .clickable(onClick = onClick)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier.size(40.dp).background(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = RoundedCornerShape(10.dp)
+                ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Language,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(
+                modifier = Modifier.weight(1f).padding(end = 8.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = currentLangName, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun LanguageSettingRoute(
+    onNavigateBack: () -> Unit = {},
+) {
+    LanguageSettingScreen(
+        onNavigateBack = onNavigateBack,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LanguageSettingScreen(
+    onNavigateBack: () -> Unit = {},
+) {
+    val currentLangCode = AppSettings.languageCode
+    var showRestartDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -444,79 +503,52 @@ private fun LanguageSettingItem() {
         )
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(top = 1.dp),
-        shape = RoundedCornerShape(14.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
-        Column(modifier = Modifier.animateContentSize(animationSpec = tween(durationMillis = 300))) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .clickable { isExpanded = !isExpanded }
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier.size(40.dp).background(
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        shape = RoundedCornerShape(10.dp)
-                    ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Language,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(
-                    modifier = Modifier.weight(1f).padding(end = 8.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
-                    Text(text = currentLangName, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-
-                Icon(
-                    imageVector = Icons.Default.ExpandMore,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.size(24.dp).rotate(rotation)
-                )
-            }
-
-            if (isExpanded) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 4.dp)
-                ) {
-                    AppSettings.supportedLanguages.forEach { (code, name) ->
-                        val isSelected = code == currentLangCode
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.settings_language))
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
+        ) {
+            AppSettings.supportedLanguages.forEach { (code, name) ->
+                val isSelected = code == currentLangCode
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(48.dp)
+                                .height(56.dp)
                                 .clickable {
                                     if (code != currentLangCode) {
                                         AppSettings.updateLanguage(code)
                                         showRestartDialog = true
                                     }
-                                    isExpanded = false
                                 }
-                                .padding(horizontal = 12.dp),
+                                .padding(horizontal = 20.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = name,
-                                fontSize = 15.sp,
+                                fontSize = 16.sp,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.weight(1f)

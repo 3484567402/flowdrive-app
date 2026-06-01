@@ -31,11 +31,6 @@ object AppSettings {
         "" to "跟随系统",
         "zh" to "简体中文",
         "en" to "English",
-        "ja" to "日本語",
-        "ko" to "한국어",
-        "fr" to "Français",
-        "de" to "Deutsch",
-        "es" to "Español",
     )
 
     fun initMMKV(context: Context) {

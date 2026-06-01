@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">FlowDrive</string>
-    <string name="crash_title">Systemfehler</string>
-    <string name="crash_no_log">Kein Protokollinhalt verfügbar</string>
-    <string name="crash_message">Ein kritischer Fehler wurde erfasst. Das Protokoll wurde lokal gespeichert.</string>
-    <string name="crash_copy">Kopieren</string>
-    <string name="crash_copied">In die Zwischenablage kopiert</string>
-    <string name="crash_restart">App neu starten</string>
-</resources>
