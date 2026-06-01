@@ -10,7 +10,13 @@ import java.util.Locale
 
 object AppSettings {
 
-    private var kv: MMKV? = null
+    private lateinit var kv: MMKV
+
+    private const val KEY_DARK_MODE_INDEX = "dark_mode_index"
+    private const val KEY_DYNAMIC_COLOR = "dynamic_color"
+    private const val KEY_IS_AMOLED = "is_amoled"
+    private const val KEY_USE_SYSTEM_FONT = "use_system_font"
+    private const val KEY_LANGUAGE_CODE = "language_code"
 
     var darkModeIndex by mutableStateOf(0)
         private set
@@ -27,48 +33,50 @@ object AppSettings {
     var languageCode by mutableStateOf("")
         private set
 
+    data class LanguageOption(val code: String, val displayName: String)
+
     val supportedLanguages = listOf(
-        "" to "跟随系统",
-        "zh" to "简体中文",
-        "en" to "English",
+        LanguageOption("", "跟随系统"),
+        LanguageOption("zh", "简体中文"),
+        LanguageOption("en", "English"),
     )
 
     fun initMMKV(context: Context) {
         MMKV.initialize(context)
     }
 
-    fun init(context: Context) {
+    fun init() {
         kv = MMKV.defaultMMKV()
-        darkModeIndex = kv!!.decodeInt("dark_mode_index", 0)
-        dynamicColor = kv!!.decodeBool("dynamic_color", true)
-        isAmoled = kv!!.decodeBool("is_amoled", false)
-        useSystemFont = kv!!.decodeBool("use_system_font", false)
-        languageCode = kv!!.decodeString("language_code", "") ?: ""
+        darkModeIndex = kv.decodeInt(KEY_DARK_MODE_INDEX, 0)
+        dynamicColor = kv.decodeBool(KEY_DYNAMIC_COLOR, true)
+        isAmoled = kv.decodeBool(KEY_IS_AMOLED, false)
+        useSystemFont = kv.decodeBool(KEY_USE_SYSTEM_FONT, false)
+        languageCode = kv.decodeString(KEY_LANGUAGE_CODE, "") ?: ""
     }
 
     fun updateDarkMode(index: Int) {
         darkModeIndex = index
-        kv?.encode("dark_mode_index", index)
+        kv.encode(KEY_DARK_MODE_INDEX, index)
     }
 
     fun updateDynamicColor(enabled: Boolean) {
         dynamicColor = enabled
-        kv?.encode("dynamic_color", enabled)
+        kv.encode(KEY_DYNAMIC_COLOR, enabled)
     }
 
     fun updateAmoled(enabled: Boolean) {
         isAmoled = enabled
-        kv?.encode("is_amoled", enabled)
+        kv.encode(KEY_IS_AMOLED, enabled)
     }
 
     fun updateUseSystemFont(enabled: Boolean) {
         useSystemFont = enabled
-        kv?.encode("use_system_font", enabled)
+        kv.encode(KEY_USE_SYSTEM_FONT, enabled)
     }
 
     fun updateLanguage(code: String) {
         languageCode = code
-        kv?.encode("language_code", code)
+        kv.encode(KEY_LANGUAGE_CODE, code)
     }
 
     private fun buildLocale(code: String): Locale {
@@ -76,8 +84,7 @@ object AppSettings {
     }
 
     fun getLocale(): Locale {
-        if (languageCode.isEmpty()) return Locale.getDefault()
-        return buildLocale(languageCode)
+        return if (languageCode.isEmpty()) Locale.getDefault() else buildLocale(languageCode)
     }
 
     fun applyLocale(context: Context, code: String = languageCode): Context {
@@ -90,10 +97,8 @@ object AppSettings {
     }
 
     fun applyLocaleEarly(context: Context): Context {
-        val kv = MMKV.defaultMMKV()
-        val savedLang = kv.decodeString("language_code", "") ?: ""
-        return if (savedLang.isNotEmpty()) {
-            applyLocale(context, savedLang)
+        return if (languageCode.isNotEmpty()) {
+            applyLocale(context)
         } else {
             context
         }

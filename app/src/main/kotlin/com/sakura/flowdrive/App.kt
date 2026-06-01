@@ -9,12 +9,12 @@ import com.sakura.flowdrive.core.util.Logger
 class App : Application() {
     override fun attachBaseContext(base: Context) {
         AppSettings.initMMKV(base)
+        AppSettings.init()
         super.attachBaseContext(AppSettings.applyLocaleEarly(base))
     }
 
     override fun onCreate() {
         super.onCreate()
-        AppSettings.init(this)
         Logger.initialize(this)
         CrashHandler.init(this) { context, crashInfo ->
             CrashActivity.start(context, crashInfo)
