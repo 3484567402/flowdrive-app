@@ -46,7 +46,7 @@ object CrashHandler {
         val errorLog = buildString {
             appendLine("[Crash Report]")
             appendLine("Time: $timeStr")
-            appendLine("Thread: ${thread.name} (ID: ${thread.threadId()})")
+            appendLine("Thread: ${thread.name} (ID: ${thread.id})")
             appendLine("Device: ${android.os.Build.MODEL} (API ${android.os.Build.VERSION.SDK_INT})")
             appendLine()
             appendLine("Exception: ${throwable.javaClass.simpleName}")

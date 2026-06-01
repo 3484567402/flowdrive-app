@@ -79,23 +79,12 @@ object AppSettings {
         kv.encode(KEY_LANGUAGE_CODE, code)
     }
 
-    fun isDarkMode(): Boolean = kv.decodeInt(KEY_DARK_MODE_INDEX, 0) == 2
-
-    fun isDynamicColorEnabled(): Boolean = kv.decodeBool(KEY_DYNAMIC_COLOR, true)
-
-    fun isAmoledEnabled(): Boolean = kv.decodeBool(KEY_IS_AMOLED, false)
-
-    fun isSystemFontEnabled(): Boolean = kv.decodeBool(KEY_USE_SYSTEM_FONT, false)
-
-    fun getLanguageCode(): String = kv.decodeString(KEY_LANGUAGE_CODE, "") ?: ""
-
     private fun buildLocale(code: String): Locale {
         return Locale.Builder().setLanguageTag(code).build()
     }
 
     fun getLocale(): Locale {
-        val code = getLanguageCode()
-        return if (code.isEmpty()) Locale.getDefault() else buildLocale(code)
+        return if (languageCode.isEmpty()) Locale.getDefault() else buildLocale(languageCode)
     }
 
     fun applyLocale(context: Context, code: String = languageCode): Context {
