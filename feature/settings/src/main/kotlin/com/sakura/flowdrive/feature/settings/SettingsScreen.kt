@@ -291,7 +291,7 @@ private fun DarkModeSettingItem() {
                     modifier = Modifier.weight(1f).padding(end = 8.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = stringResource(R.string.settings_dark_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                    Text(text = stringResource(R.string.settings_dark_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(text = currentModeText, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
 
@@ -346,7 +346,7 @@ private fun DarkModeSettingItem() {
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = stringResource(R.string.settings_amoled), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                                Text(text = stringResource(R.string.settings_amoled), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 Text(text = stringResource(R.string.settings_amoled_desc), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                             Switch(checked = isAmoled, onCheckedChange = {
@@ -382,7 +382,7 @@ private fun DynamicColorSettingItem() {
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.settings_dynamic_color), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_dynamic_color), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = if (isSupported) stringResource(R.string.settings_dynamic_color_desc) else stringResource(R.string.settings_dynamic_color_unsupported), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             Switch(enabled = isSupported, checked = AppSettings.dynamicColor, onCheckedChange = { AppSettings.updateDynamicColor(it) })
@@ -410,7 +410,7 @@ private fun FontSettingItem() {
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.settings_system_font), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_system_font), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = if (AppSettings.useSystemFont) stringResource(R.string.settings_system_font_on) else stringResource(R.string.settings_system_font_off), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp))
             }
             Switch(checked = AppSettings.useSystemFont, onCheckedChange = { AppSettings.updateUseSystemFont(it) })
@@ -459,7 +459,7 @@ private fun LanguageSettingItem(onClick: () -> Unit) {
                 modifier = Modifier.weight(1f).padding(end = 8.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.settings_language), fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = currentLangName, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
 
@@ -625,7 +625,7 @@ private fun ModernSettingItem(
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (subtitle != null) {
                     Text(text = subtitle, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp))
                 }
