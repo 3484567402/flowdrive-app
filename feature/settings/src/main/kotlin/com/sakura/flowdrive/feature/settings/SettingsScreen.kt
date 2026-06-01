@@ -2,6 +2,7 @@ package com.sakura.flowdrive.feature.settings
 
 import android.content.Intent
 import android.os.Build
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
