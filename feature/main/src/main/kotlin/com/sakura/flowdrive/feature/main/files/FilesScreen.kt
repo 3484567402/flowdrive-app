@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import com.sakura.flowdrive.feature.main.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -119,28 +120,34 @@ private val dates = listOf(
 )
 
 fun getMockFilesForPath(pathName: String): List<FileItem> {
+    val rng = java.util.Random(pathName.hashCode().toLong())
+
     val folders = folderNames.map { name ->
-        val itemCount = (3..50).random()
-        FileItem(name = name, type = FileType.Folder, date = dates.random(), size = "$itemCount items")
+        val itemCount = 3 + rng.nextInt(48)
+        FileItem(name = name, type = FileType.Folder, date = dates[rng.nextInt(dates.size)], size = "$itemCount items")
     }
 
-    val images = imageNames.shuffled().take((8..15).random()).map { name ->
-        FileItem(name = name, type = FileType.Image, date = dates.random(), size = imageSizes.random())
+    val imageCount = 8 + rng.nextInt(8)
+    val images = imageNames.shuffled(rng).take(imageCount).map { name ->
+        FileItem(name = name, type = FileType.Image, date = dates[rng.nextInt(dates.size)], size = imageSizes[rng.nextInt(imageSizes.size)])
     }
 
-    val videos = videoNames.shuffled().take((5..10).random()).map { name ->
-        FileItem(name = name, type = FileType.Video, date = dates.random(), size = videoSizes.random())
+    val videoCount = 5 + rng.nextInt(6)
+    val videos = videoNames.shuffled(rng).take(videoCount).map { name ->
+        FileItem(name = name, type = FileType.Video, date = dates[rng.nextInt(dates.size)], size = videoSizes[rng.nextInt(videoSizes.size)])
     }
 
-    val documents = documentNames.shuffled().take((8..15).random()).map { name ->
-        FileItem(name = name, type = FileType.Document, date = dates.random(), size = documentSizes.random())
+    val docCount = 8 + rng.nextInt(8)
+    val documents = documentNames.shuffled(rng).take(docCount).map { name ->
+        FileItem(name = name, type = FileType.Document, date = dates[rng.nextInt(dates.size)], size = documentSizes[rng.nextInt(documentSizes.size)])
     }
 
-    val unknowns = unknownNames.shuffled().take((2..5).random()).map { name ->
-        FileItem(name = name, type = FileType.Unknown, date = dates.random(), size = unknownSizes.random())
+    val unknownCount = 2 + rng.nextInt(4)
+    val unknowns = unknownNames.shuffled(rng).take(unknownCount).map { name ->
+        FileItem(name = name, type = FileType.Unknown, date = dates[rng.nextInt(dates.size)], size = unknownSizes[rng.nextInt(unknownSizes.size)])
     }
 
-    return (folders + images + videos + documents + unknowns).shuffled()
+    return (folders + images + videos + documents + unknowns).shuffled(rng)
 }
 
 @Composable
@@ -246,6 +253,7 @@ fun FileListView(files: List<FileItem>, onFileClick: (FileItem) -> Unit) {
 
 @Composable
 fun FileListItem(file: FileItem, onClick: () -> Unit) {
+    val isLight = !isSystemInDarkTheme()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -258,13 +266,13 @@ fun FileListItem(file: FileItem, onClick: () -> Unit) {
             modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(14.dp))
-                .background(file.type.getBackgroundColor()),
+                .background(file.type.getBackgroundColor(isLight)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = file.type.getIcon(),
                 contentDescription = null,
-                tint = file.type.getIconColor(),
+                tint = file.type.getIconColor(isLight),
                 modifier = Modifier.size(28.dp)
             )
         }
@@ -321,6 +329,7 @@ fun FileGridView(files: List<FileItem>, onFileClick: (FileItem) -> Unit) {
 
 @Composable
 fun FileGridItem(file: FileItem, onClick: () -> Unit) {
+    val isLight = !isSystemInDarkTheme()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -333,13 +342,13 @@ fun FileGridItem(file: FileItem, onClick: () -> Unit) {
                 .aspectRatio(1f)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(20.dp))
-                .background(file.type.getBackgroundColor()),
+                .background(file.type.getBackgroundColor(isLight)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = file.type.getIcon(),
                 contentDescription = null,
-                tint = file.type.getIconColor(),
+                tint = file.type.getIconColor(isLight),
                 modifier = Modifier.size(40.dp)
             )
         }
@@ -358,7 +367,6 @@ fun FileGridItem(file: FileItem, onClick: () -> Unit) {
     }
 }
 
-@Composable
 fun FileType.getIcon(): ImageVector {
     return when (this) {
         FileType.Folder -> Icons.Rounded.Folder
@@ -369,26 +377,22 @@ fun FileType.getIcon(): ImageVector {
     }
 }
 
-@Composable
-fun FileType.getBackgroundColor(): Color {
-    val isLight = MaterialTheme.colorScheme.background != Color.Black
+fun FileType.getBackgroundColor(isLight: Boolean): Color {
     return when (this) {
         FileType.Folder -> if (isLight) Color(0xFFE8F0FE) else Color(0xFF1E2A3A)
         FileType.Image -> if (isLight) Color(0xFFFCE8E6) else Color(0xFF3A201E)
         FileType.Video -> if (isLight) Color(0xFFE6F4EA) else Color(0xFF1E3A26)
         FileType.Document -> if (isLight) Color(0xFFFEF7E0) else Color(0xFF3A321E)
-        FileType.Unknown -> MaterialTheme.colorScheme.surfaceVariant
+        FileType.Unknown -> Color(0xFFD9D9D9)
     }
 }
 
-@Composable
-fun FileType.getIconColor(): Color {
-    val isLight = MaterialTheme.colorScheme.background != Color.Black
+fun FileType.getIconColor(isLight: Boolean): Color {
     return when (this) {
         FileType.Folder -> if (isLight) Color(0xFF1A73E8) else Color(0xFF8AB4F8)
         FileType.Image -> if (isLight) Color(0xFFD93025) else Color(0xFFF28B82)
         FileType.Video -> if (isLight) Color(0xFF1E8E3E) else Color(0xFF81C995)
         FileType.Document -> if (isLight) Color(0xFFF9AB00) else Color(0xFFFDE293)
-        FileType.Unknown -> MaterialTheme.colorScheme.onSurfaceVariant
+        FileType.Unknown -> Color(0xFF78909C)
     }
 }

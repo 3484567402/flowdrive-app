@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun attachBaseContext(newBase: android.content.Context) {
-        val context = AppSettings.applyLocale(newBase)
-        super.attachBaseContext(context)
+        super.attachBaseContext(AppSettings.applyLocale(newBase))
     }
 }

@@ -3,9 +3,13 @@ package com.sakura.flowdrive.core.util
 import android.content.Context
 import android.util.Log
 import com.tencent.mmkv.MMKV
+import java.io.BufferedWriter
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
+import java.io.FileWriter
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
 
 object Logger {
@@ -13,18 +17,7 @@ object Logger {
 
     private lateinit var appContext: Context
 
-    private fun getDefaultLogPath(): String {
-        return if (::appContext.isInitialized) {
-            val externalDir = appContext.getExternalFilesDir(null)
-            if (externalDir != null) {
-                File(externalDir, "logs").absolutePath
-            } else {
-                File(appContext.filesDir, "logs").absolutePath
-            }
-        } else {
-            "/storage/emulated/0/Android/data/com.sakura.flowdrive/logs"
-        }
-    }
+    private var cachedLogPath: String? = null
 
     private const val VERBOSE = 0
     private const val DEBUG = 1
@@ -34,19 +27,22 @@ object Logger {
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
-    private val fileDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+    private var currentLogDate: String? = null
+    private var currentWriter: BufferedWriter? = null
 
     fun initialize(context: Context) {
         appContext = context.applicationContext
         ensureLogDirectory()
 
-        val configInfo = """
-            |=== Logger 初始化完成 ===
-            |日志路径: ${getLogPath()}
-            |MMKV可用: ${isMMKVAvailable()}
-            |========================
-        """.trimMargin()
+        val configInfo = buildString {
+            appendLine("=== Logger 初始化完成 ===")
+            appendLine("日志路径: ${getLogPath()}")
+            appendLine("MMKV可用: ${isMMKVAvailable()}")
+            appendLine("========================")
+        }
 
         internalLog(INFO, "Logger", configInfo, false)
     }
@@ -55,6 +51,8 @@ object Logger {
         try {
             val mmkv = MMKV.defaultMMKV()
             mmkv.encode(KEY_LOG_PATH, customPath)
+            cachedLogPath = customPath
+            closeWriter()
             ensureLogDirectory(customPath)
             internalLog(INFO, "Logger", "日志路径已更新: $customPath", false)
         } catch (e: Exception) {
@@ -63,13 +61,16 @@ object Logger {
     }
 
     fun getLogPath(): String {
-        return try {
+        cachedLogPath?.let { return it }
+        val path = try {
             val mmkv = MMKV.defaultMMKV()
             mmkv.decodeString(KEY_LOG_PATH, getDefaultLogPath()) ?: getDefaultLogPath()
         } catch (e: Exception) {
             Log.e("Logger", "获取日志路径失败: ${e.message}")
             getDefaultLogPath()
         }
+        cachedLogPath = path
+        return path
     }
 
     fun v(tag: String, message: String) = log(VERBOSE, tag, message)
@@ -109,7 +110,17 @@ object Logger {
     private fun internalLog(level: Int, tag: String, message: String, includeStackTrace: Boolean) {
         try {
             val logPath = getLogPath()
-            val logFile = getTodayLogFile(logPath)
+            val todayDate = LocalDate.now().format(dateFormatter)
+
+            val writer = getWriter(logPath, todayDate)
+            val logFile = File(logPath, "app_$todayDate.log")
+            if (!logFile.exists()) {
+                logFile.parentFile?.mkdirs()
+                logFile.createNewFile()
+                val timeStr = Instant.now().atZone(ZoneId.systemDefault()).format(dateTimeFormatter)
+                writer.write("=== 日志文件创建时间: $timeStr ===\n")
+                writer.flush()
+            }
 
             val stackTraceInfo = if (includeStackTrace) {
                 getStackTraceInfo()
@@ -124,9 +135,7 @@ object Logger {
                 else -> "U"
             }
 
-            val timeStr = synchronized(dateFormat) {
-                dateFormat.format(Date())
-            }
+            val timeStr = Instant.now().atZone(ZoneId.systemDefault()).format(dateTimeFormatter)
 
             val logContent = buildString {
                 append(timeStr)
@@ -138,10 +147,32 @@ object Logger {
                 append("\n")
             }
 
-            logFile.appendText(logContent)
+            writer.write(logContent)
+            writer.flush()
         } catch (e: Exception) {
             Log.e("Logger", "internalLog 异常: ${e.message}")
         }
+    }
+
+    @Synchronized
+    private fun getWriter(logPath: String, todayDate: String): BufferedWriter {
+        val existing = currentWriter
+        if (currentLogDate == todayDate && existing != null) {
+            return existing
+        }
+        existing?.close()
+        val logFile = File(logPath, "app_$todayDate.log")
+        val writer = BufferedWriter(FileWriter(logFile, true))
+        currentLogDate = todayDate
+        currentWriter = writer
+        return writer
+    }
+
+    @Synchronized
+    private fun closeWriter() {
+        currentWriter?.close()
+        currentWriter = null
+        currentLogDate = null
     }
 
     private fun getStackTraceInfo(): String {
@@ -163,24 +194,6 @@ object Logger {
         }
     }
 
-    private fun getTodayLogFile(logPath: String): File {
-        val dateStr = synchronized(fileDateFormat) {
-            fileDateFormat.format(Date())
-        }
-        val logFile = File(logPath, "app_$dateStr.log")
-
-        if (!logFile.exists()) {
-            logFile.parentFile?.mkdirs()
-            logFile.createNewFile()
-            val timeStr = synchronized(dateFormat) {
-                dateFormat.format(Date())
-            }
-            logFile.writeText("=== 日志文件创建时间: $timeStr ===\n")
-        }
-
-        return logFile
-    }
-
     private fun ensureLogDirectory(path: String = getLogPath()) {
         val dir = File(path)
         if (!dir.exists()) {
@@ -194,6 +207,19 @@ object Logger {
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    private fun getDefaultLogPath(): String {
+        return if (::appContext.isInitialized) {
+            val externalDir = appContext.getExternalFilesDir(null)
+            if (externalDir != null) {
+                File(externalDir, "logs").absolutePath
+            } else {
+                File(appContext.filesDir, "logs").absolutePath
+            }
+        } else {
+            "/storage/emulated/0/Android/data/com.sakura.flowdrive/logs"
         }
     }
 
@@ -217,9 +243,7 @@ object Logger {
         executor.submit {
             try {
                 val logFiles = getLogFiles()
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.DAY_OF_YEAR, -daysToKeep)
-                val cutoffTime = calendar.timeInMillis
+                val cutoffTime = System.currentTimeMillis() - daysToKeep.toLong() * 24 * 60 * 60 * 1000
 
                 var deletedCount = 0
                 logFiles.forEach { file ->

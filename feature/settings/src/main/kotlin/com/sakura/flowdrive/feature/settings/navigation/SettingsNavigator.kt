@@ -14,4 +14,8 @@ object SettingsNavigator {
     fun toSubSetting2() {
         navigate(SettingsRoutes.SubSetting2)
     }
+
+    fun toLanguageSetting() {
+        navigate(SettingsRoutes.LanguageSetting)
+    }
 }

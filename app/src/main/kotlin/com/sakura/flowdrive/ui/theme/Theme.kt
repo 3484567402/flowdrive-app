@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -103,22 +104,24 @@ fun FlowDriveTheme(
         else -> isSystemInDarkTheme()
     }
 
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (isDark) {
-                val base = dynamicDarkColorScheme(context)
-                if (isAmoled) base.copy(
-                    background = Color.Black,
-                    surface = Color.Black,
-                    surfaceVariant = Color(0xFF1A1A1A),
-                    outlineVariant = Color(0xFF2A2A2A)
-                ) else base
-            } else dynamicLightColorScheme(context)
+    val context = LocalContext.current
+    val colorScheme = remember(dynamicColor, isDark, isAmoled) {
+        when {
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                if (isDark) {
+                    val base = dynamicDarkColorScheme(context)
+                    if (isAmoled) base.copy(
+                        background = Color.Black,
+                        surface = Color.Black,
+                        surfaceVariant = Color(0xFF1A1A1A),
+                        outlineVariant = Color(0xFF2A2A2A)
+                    ) else base
+                } else dynamicLightColorScheme(context)
+            }
+            isDark && isAmoled -> AmoledColorScheme
+            isDark -> DarkColorScheme
+            else -> LightColorScheme
         }
-        isDark && isAmoled -> AmoledColorScheme
-        isDark -> DarkColorScheme
-        else -> LightColorScheme
     }
 
     val view = LocalView.current
@@ -134,7 +137,7 @@ fun FlowDriveTheme(
     } else {
         HarmonyOsSans
     }
-    val typography = buildTypography(fontFamily)
+    val typography = remember(fontFamily) { buildTypography(fontFamily) }
 
     MaterialTheme(
         colorScheme = colorScheme,

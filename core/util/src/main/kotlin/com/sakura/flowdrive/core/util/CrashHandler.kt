@@ -4,13 +4,21 @@ import android.content.Context
 import android.os.Process
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
 object CrashHandler {
 
     private lateinit var applicationContext: Context
+
+    @Volatile
     private var isHandling = false
+
     private var crashActivityStarter: ((Context, String) -> Unit)? = null
+
+    private val crashTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
 
     fun init(context: Context, crashStarter: ((Context, String) -> Unit)? = null) {
         applicationContext = context.applicationContext
@@ -33,25 +41,26 @@ object CrashHandler {
         throwable.printStackTrace(pw)
         val stackTrace = sw.toString()
 
-        @Suppress("DEPRECATION")
-        val errorLog = """
-[Crash Report]
-Time: ${java.util.Date()}
-Thread: ${thread.name} (ID: ${thread.id})
-Device: ${android.os.Build.MODEL} (API ${android.os.Build.VERSION.SDK_INT})
-            
-Exception: ${throwable.javaClass.simpleName}
-Message: ${throwable.localizedMessage}
-            
-Stack Trace:
-$stackTrace
-        """.trimIndent()
+        val timeStr = Instant.now().atZone(ZoneId.systemDefault()).format(crashTimeFormatter)
+
+        val errorLog = buildString {
+            appendLine("[Crash Report]")
+            appendLine("Time: $timeStr")
+            appendLine("Thread: ${thread.name} (ID: ${thread.id})")
+            appendLine("Device: ${android.os.Build.MODEL} (API ${android.os.Build.VERSION.SDK_INT})")
+            appendLine()
+            appendLine("Exception: ${throwable.javaClass.simpleName}")
+            appendLine("Message: ${throwable.localizedMessage}")
+            appendLine()
+            appendLine("Stack Trace:")
+            append(stackTrace)
+        }
 
         Logger.e("CRASH_MASTER", errorLog)
 
         try {
             crashActivityStarter?.invoke(applicationContext, errorLog)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
 
         Process.killProcess(Process.myPid())
