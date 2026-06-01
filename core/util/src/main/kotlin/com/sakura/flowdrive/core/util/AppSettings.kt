@@ -39,6 +39,7 @@ object AppSettings {
     )
 
     fun init(context: Context) {
+        MMKV.initialize(context)
         kv = MMKV.defaultMMKV()
         darkModeIndex = kv!!.decodeInt("dark_mode_index", 0)
         dynamicColor = kv!!.decodeBool("dynamic_color", true)
@@ -91,6 +92,7 @@ object AppSettings {
     }
 
     fun applyLocaleEarly(context: Context): Context {
+        MMKV.initialize(context)
         val kv = MMKV.defaultMMKV()
         val savedLang = kv.decodeString("language_code", "") ?: ""
         return if (savedLang.isNotEmpty()) {
